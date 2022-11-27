@@ -22,8 +22,7 @@ def is_sendcm_folder_link(url):
         or f"{base_url}?sort_order" in url
     )
 
-is_sendcm_folder = is_sendcm_folder_link(url)
-if is_sendcm_folder:
+if is_sendcm_folder := is_sendcm_folder_link(url):
     done = False
     page_no = 0
     while not done:
@@ -52,12 +51,12 @@ if is_sendcm_folder:
             print ("Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ: ",dl_url)
             print ("\n")
             pages = soup.find("ul", class_="pagination")
-            if pages == None:
+            if pages is None:
                 done = True
             else:
                 current_page = pages.find("li", "page-item actived", recursive=False)
                 next_page = current_page.next_sibling
-                if next_page == None:
+                if next_page is None:
                     done = True
                 else:
                     url = base_url + next_page["href"]
@@ -69,7 +68,7 @@ else:
     file_name = findall("URL=(.*?) - ", resp.text)[0].split("]")[1]
     parse = {"op":"download2", "id": file_id, "referer": url}
     sleep(2)
-    resp2 = client.post(base_url, data=parse, headers=hs, allow_redirects=False)    
+    resp2 = client.post(base_url, data=parse, headers=hs, allow_redirects=False)
     dl_url = resp2.headers["Location"]
     dl_url = dl_url.replace(" ", "%20")
     print ("\n")
